@@ -24,10 +24,13 @@ export default class Order {
     if(this._items.length === 0) {
       throw new Error("Items are requrired")
     }
+    if (this._items.some(item => item.quantity <= 0)) {
+      throw new Error("Quantity must be greater than zero")
+    }
     return true
   }
 
   total():number {
-    return this._items.reduce((acc, item) => acc+item.price, 0)
+    return this._items.reduce((acc, item) => acc+item.total(), 0)
   }
 }
