@@ -40,4 +40,13 @@ describe('Costumer Unit Test', () => {
       costumer.activate()
     }).toThrowError("Adress is mandatory to activate a costumer")
   })
+
+  it('Should add reward points', () => {
+    const costumer = new Costumer("c1", "Costumer")
+    expect(costumer.rewardsPoints).toBe(0)
+    costumer.addRewardPoints(10)
+    expect(costumer.rewardsPoints).toBe(10)
+    costumer.addRewardPoints(20)
+    expect(costumer.rewardsPoints).toBe(30)
+  })
 })
