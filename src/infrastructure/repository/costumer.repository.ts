@@ -1,29 +1,29 @@
-import Address from "../../domain/entity/address"
-import Costumer from "../../domain/entity/costumer"
-import CostumerRepositoryInterface from "../../domain/repository/costumer-repository"
-import CostumerModel from "../db/sequelize/model/costumer.model"
+import Address from '../../domain/entity/address'
+import Costumer from '../../domain/entity/costumer'
+import type CostumerRepositoryInterface from '../../domain/repository/costumer-repository'
+import CostumerModel from '../db/sequelize/model/costumer.model'
 
-export default class CostumerRepository implements CostumerRepositoryInterface   {
-  async create(entity: Costumer): Promise<void> {
+export default class CostumerRepository implements CostumerRepositoryInterface {
+  async create (entity: Costumer): Promise<void> {
     await CostumerModel.create({
       id: entity.id,
       name: entity.name,
-      street: entity.Address.street,
-      number: entity.Address.number,
-      zipcode: entity.Address.zip,
-      city: entity.Address.city,
+      street: entity.address.street,
+      number: entity.address.number,
+      zipcode: entity.address.zip,
+      city: entity.address.city,
       active: entity.isActive(),
       rewardPoints: entity.rewardsPoints
     })
   }
 
-  async update(entity: Costumer): Promise<void> {
+  async update (entity: Costumer): Promise<void> {
     await CostumerModel.update({
       name: entity.name,
-      street: entity.Address.street,
-      number: entity.Address.number,
-      zipcode: entity.Address.zip,
-      city: entity.Address.city,
+      street: entity.address.street,
+      number: entity.address.number,
+      zipcode: entity.address.zip,
+      city: entity.address.city,
       active: entity.isActive(),
       rewardPoints: entity.rewardsPoints
     }, {
@@ -31,10 +31,10 @@ export default class CostumerRepository implements CostumerRepositoryInterface  
     })
   }
 
-  async find(id: string): Promise<Costumer> {
+  async find (id: string): Promise<Costumer> {
     let costumerModel
     try {
-      costumerModel = await CostumerModel.findOne({ where: {id}, rejectOnEmpty: true })
+      costumerModel = await CostumerModel.findOne({ where: { id }, rejectOnEmpty: true })
     } catch (error) {
       throw new Error('Costumer not found')
     }
@@ -44,9 +44,9 @@ export default class CostumerRepository implements CostumerRepositoryInterface  
     return costumer
   }
 
-  async findAll(): Promise<Costumer[]> {
+  async findAll (): Promise<Costumer[]> {
     const costumerModels = await CostumerModel.findAll()
-    const costumers =  costumerModels.map(costumerModel => {
+    const costumers = costumerModels.map(costumerModel => {
       const costumer = new Costumer(costumerModel.id, costumerModel.name)
       costumer.addRewardPoints(costumerModel.rewardPoints)
       costumer.changeAddress(new Address(costumerModel.street, costumerModel.number, costumerModel.zipcode, costumerModel.city))
