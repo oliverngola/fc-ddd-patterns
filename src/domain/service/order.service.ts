@@ -1,12 +1,12 @@
-import type Costumer from '../entity/costumer'
+import type Customer from '../entity/customer'
 import Order from '../entity/order'
 import type OrderItem from '../entity/order_item'
 import { v4 as uuid } from 'uuid'
 
 export default class OrderService {
-  static placeOrder (costumer: Costumer, items: OrderItem[]): Order {
-    const order = new Order(uuid(), costumer.id, items)
-    costumer.addRewardPoints(order.total() / 2)
+  static placeOrder (customer: Customer, items: OrderItem[]): Order {
+    const order = new Order(uuid(), customer.id, items)
+    customer.addRewardPoints(order.total() / 2)
     return order
   }
 

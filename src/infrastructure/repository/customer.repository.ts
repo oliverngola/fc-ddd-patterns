@@ -1,10 +1,10 @@
 import Address from '../../domain/entity/address'
-import Costumer from '../../domain/entity/costumer'
-import type CostumerRepositoryInterface from '../../domain/repository/costumer-repository'
-import CostumerModel from '../db/sequelize/model/costumer.model'
+import Customer from '../../domain/entity/customer'
+import type CostumerRepositoryInterface from '../../domain/repository/customer-repository'
+import CostumerModel from '../db/sequelize/model/customer.model'
 
 export default class CostumerRepository implements CostumerRepositoryInterface {
-  async create (entity: Costumer): Promise<void> {
+  async create (entity: Customer): Promise<void> {
     await CostumerModel.create({
       id: entity.id,
       name: entity.name,
@@ -17,7 +17,7 @@ export default class CostumerRepository implements CostumerRepositoryInterface {
     })
   }
 
-  async update (entity: Costumer): Promise<void> {
+  async update (entity: Customer): Promise<void> {
     await CostumerModel.update({
       name: entity.name,
       street: entity.address.street,
@@ -31,29 +31,29 @@ export default class CostumerRepository implements CostumerRepositoryInterface {
     })
   }
 
-  async find (id: string): Promise<Costumer> {
+  async find (id: string): Promise<Customer> {
     let costumerModel
     try {
       costumerModel = await CostumerModel.findOne({ where: { id }, rejectOnEmpty: true })
     } catch (error) {
-      throw new Error('Costumer not found')
+      throw new Error('Customer not found')
     }
-    const costumer = new Costumer(id, costumerModel.name)
-    costumer.addRewardPoints(costumerModel.rewardPoints)
-    costumer.changeAddress(new Address(costumerModel.street, costumerModel.number, costumerModel.zipcode, costumerModel.city))
-    return costumer
+    const customer = new Customer(id, costumerModel.name)
+    customer.addRewardPoints(costumerModel.rewardPoints)
+    customer.changeAddress(new Address(costumerModel.street, costumerModel.number, costumerModel.zipcode, costumerModel.city))
+    return customer
   }
 
-  async findAll (): Promise<Costumer[]> {
+  async findAll (): Promise<Customer[]> {
     const costumerModels = await CostumerModel.findAll()
     const costumers = costumerModels.map(costumerModel => {
-      const costumer = new Costumer(costumerModel.id, costumerModel.name)
-      costumer.addRewardPoints(costumerModel.rewardPoints)
-      costumer.changeAddress(new Address(costumerModel.street, costumerModel.number, costumerModel.zipcode, costumerModel.city))
+      const customer = new Customer(costumerModel.id, costumerModel.name)
+      customer.addRewardPoints(costumerModel.rewardPoints)
+      customer.changeAddress(new Address(costumerModel.street, costumerModel.number, costumerModel.zipcode, costumerModel.city))
       if (costumerModel.active) {
-        costumer.activate()
+        customer.activate()
       }
-      return costumer
+      return customer
     })
     return costumers
   }

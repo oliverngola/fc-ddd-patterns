@@ -1,10 +1,10 @@
 import { Sequelize } from 'sequelize-typescript'
-import CostumerModel from '../db/sequelize/model/costumer.model'
-import CostumerRepository from './costumer.repository'
-import Costumer from '../../domain/entity/costumer'
+import CostumerModel from '../db/sequelize/model/customer.model'
+import CostumerRepository from './customer.repository'
+import Customer from '../../domain/entity/customer'
 import Address from '../../domain/entity/address'
 
-describe('Costumer Repository', () => {
+describe('Customer Repository', () => {
   let sequelize: Sequelize
 
   beforeEach(async () => {
@@ -21,18 +21,18 @@ describe('Costumer Repository', () => {
     await sequelize.close()
   })
 
-  it('Should create a costumer', async () => {
+  it('Should create a customer', async () => {
     const costumerRepository = new CostumerRepository()
-    const costumer = new Costumer('123', 'Costumer 1')
+    const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
-    costumer.changeAddress(address)
-    await costumerRepository.create(costumer)
+    customer.changeAddress(address)
+    await costumerRepository.create(customer)
     const costumerModel = await CostumerModel.findOne({ where: { id: '123' } })
     expect(costumerModel.toJSON()).toStrictEqual({
       id: '123',
-      name: costumer.name,
-      active: costumer.isActive(),
-      rewardPoints: costumer.rewardsPoints,
+      name: customer.name,
+      active: customer.isActive(),
+      rewardPoints: customer.rewardsPoints,
       street: address.street,
       number: address.number,
       zipcode: address.zip,
@@ -40,20 +40,20 @@ describe('Costumer Repository', () => {
     })
   })
 
-  it('Should update a costumer', async () => {
+  it('Should update a customer', async () => {
     const costumerRepository = new CostumerRepository()
-    const costumer = new Costumer('123', 'Costumer 1')
+    const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
-    costumer.changeAddress(address)
-    await costumerRepository.create(costumer)
-    costumer.changeName('Costumer 2')
-    await costumerRepository.update(costumer)
+    customer.changeAddress(address)
+    await costumerRepository.create(customer)
+    customer.changeName('Customer 2')
+    await costumerRepository.update(customer)
     const costumerModel = await CostumerModel.findOne({ where: { id: '123' } })
     expect(costumerModel.toJSON()).toStrictEqual({
       id: '123',
-      name: costumer.name,
-      active: costumer.isActive(),
-      rewardPoints: costumer.rewardsPoints,
+      name: customer.name,
+      active: customer.isActive(),
+      rewardPoints: customer.rewardsPoints,
       street: address.street,
       number: address.number,
       zipcode: address.zip,
@@ -61,38 +61,38 @@ describe('Costumer Repository', () => {
     })
   })
 
-  it('Should find a costumer', async () => {
+  it('Should find a customer', async () => {
     const costumerRepository = new CostumerRepository()
-    const costumer = new Costumer('123', 'Costumer 1')
+    const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
-    costumer.changeAddress(address)
-    await costumerRepository.create(costumer)
-    const costumerResult = await costumerRepository.find(costumer.id)
-    expect(costumer).toStrictEqual(costumerResult)
+    customer.changeAddress(address)
+    await costumerRepository.create(customer)
+    const costumerResult = await costumerRepository.find(customer.id)
+    expect(customer).toStrictEqual(costumerResult)
   })
 
-  it('Should throw an error when costumer is not found', async () => {
+  it('Should throw an error when customer is not found', async () => {
     const costumerRepository = new CostumerRepository()
     const promise = costumerRepository.find('ABC')
-    await expect(promise).rejects.toThrow('Costumer not found')
+    await expect(promise).rejects.toThrow('Customer not found')
   })
 
-  it('Should find a costumer', async () => {
+  it('Should find a customer', async () => {
     const costumerRepository = new CostumerRepository()
-    const costumer = new Costumer('123', 'Costumer 1')
+    const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
-    costumer.changeAddress(address)
-    costumer.addRewardPoints(10)
-    costumer.activate()
-    await costumerRepository.create(costumer)
-    const costumer2 = new Costumer('1234', 'Costumer 2')
+    customer.changeAddress(address)
+    customer.addRewardPoints(10)
+    customer.activate()
+    await costumerRepository.create(customer)
+    const costumer2 = new Customer('1234', 'Customer 2')
     const address2 = new Address('Street 2', 2, 'Zipcode 2', 'City 2')
     costumer2.changeAddress(address2)
     costumer2.addRewardPoints(5)
     costumer2.activate()
     await costumerRepository.create(costumer2)
     const foundCostumers = await costumerRepository.findAll()
-    const costumers = [costumer, costumer2]
+    const costumers = [customer, costumer2]
     expect(costumers).toHaveLength(2)
     expect(costumers).toStrictEqual(foundCostumers)
   })

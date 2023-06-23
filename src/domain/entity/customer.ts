@@ -1,6 +1,6 @@
 import type Address from './address'
 
-export default class Costumer {
+export default class Customer {
   private readonly _id: string
   private _name: string
   private _address!: Address
@@ -57,7 +57,7 @@ export default class Costumer {
 
   activate () {
     if (this._address === undefined) {
-      throw new Error('Adress is mandatory to activate a costumer')
+      throw new Error('Adress is mandatory to activate a customer')
     }
     this._active = true
   }
