@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import CostumerModel from '../db/sequelize/model/customer.model'
-import CostumerRepository from './customer.repository'
+import CustomerRepository from './customer.repository'
 import Customer from '../../domain/entity/customer'
 import Address from '../../domain/entity/address'
 
@@ -22,7 +22,7 @@ describe('Customer Repository', () => {
   })
 
   it('Should create a customer', async () => {
-    const costumerRepository = new CostumerRepository()
+    const costumerRepository = new CustomerRepository()
     const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
     customer.changeAddress(address)
@@ -41,7 +41,7 @@ describe('Customer Repository', () => {
   })
 
   it('Should update a customer', async () => {
-    const costumerRepository = new CostumerRepository()
+    const costumerRepository = new CustomerRepository()
     const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
     customer.changeAddress(address)
@@ -62,7 +62,7 @@ describe('Customer Repository', () => {
   })
 
   it('Should find a customer', async () => {
-    const costumerRepository = new CostumerRepository()
+    const costumerRepository = new CustomerRepository()
     const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
     customer.changeAddress(address)
@@ -72,13 +72,13 @@ describe('Customer Repository', () => {
   })
 
   it('Should throw an error when customer is not found', async () => {
-    const costumerRepository = new CostumerRepository()
+    const costumerRepository = new CustomerRepository()
     const promise = costumerRepository.find('ABC')
     await expect(promise).rejects.toThrow('Customer not found')
   })
 
   it('Should find a customer', async () => {
-    const costumerRepository = new CostumerRepository()
+    const costumerRepository = new CustomerRepository()
     const customer = new Customer('123', 'Customer 1')
     const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
     customer.changeAddress(address)
