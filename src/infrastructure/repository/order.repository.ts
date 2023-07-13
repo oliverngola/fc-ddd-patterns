@@ -7,7 +7,7 @@ export default class OrderRepository implements RepositoryInterface<Order> {
   async create (entity: Order): Promise<void> {
     await OrderModel.create({
       id: entity.id,
-      costumer_id: entity.costumerId,
+      customer_id: entity.customerId,
       total: entity.total(),
       items: entity.items.map((item) => ({
         id: item.id,
