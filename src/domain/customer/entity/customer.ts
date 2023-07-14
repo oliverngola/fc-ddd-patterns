@@ -1,4 +1,4 @@
-import type Address from './address'
+import type Address from '../value-object/address'
 
 export default class Customer {
   private readonly _id: string
