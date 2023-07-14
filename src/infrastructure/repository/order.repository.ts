@@ -23,7 +23,20 @@ export default class OrderRepository implements RepositoryInterface<Order> {
   }
 
   async update (entity: Order): Promise<void> {
-    throw new Error('Not Implemented')
+    const sequelize = OrderModel.sequelize
+    await sequelize.transaction(async (transaction) => {
+      await OrderItemModel.destroy({ where: { order_id: entity.id }, transaction })
+      const items = entity.items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        product_id: item.productId,
+        quantity: item.quantity,
+        order_id: entity.id
+      }))
+      await OrderItemModel.bulkCreate(items, { transaction })
+      await OrderModel.update({ total: entity.total() }, { where: { id: entity.id }, transaction })
+    })
   }
 
   async find (id: string): Promise<Order> {
