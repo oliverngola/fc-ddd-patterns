@@ -2,7 +2,7 @@ import type EventInterface from './event.interface'
 import type EventHandlerInterface from './event-handler.interface'
 
 export default class EventDispatcher implements EventDispatcher {
-  private readonly eventHandlers: Record<string, EventHandlerInterface[]> = {}
+  private eventHandlers: Record<string, EventHandlerInterface[]> = {}
 
   get getEventHandlers (): Record<string, EventHandlerInterface[]> {
     return this.eventHandlers
@@ -19,8 +19,15 @@ export default class EventDispatcher implements EventDispatcher {
   }
 
   unregister (eventName: string, eventHandler: EventHandlerInterface): void {
+    if (this.eventHandlers[eventName]) {
+      const index = this.eventHandlers[eventName].indexOf(eventHandler)
+      if (index !== -1) {
+        this.eventHandlers[eventName].splice(index, 1)
+      }
+    }
   }
 
   unregisterAll (): void {
+    this.eventHandlers = {}
   }
 }
