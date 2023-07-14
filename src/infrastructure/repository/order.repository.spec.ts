@@ -111,9 +111,48 @@ describe('Order repository test', () => {
     expect(order).toStrictEqual(orderResult)
   })
 
-  it('Should throw an error when customer is not found', async () => {
+  it('Should throw an error when order is not found', async () => {
     const orderRepository = new OrderRepository()
     const promise = orderRepository.find('ABC')
     await expect(promise).rejects.toThrow('Order not found')
+  })
+
+  it('Should find all orders', async () => {
+    const customerRepository = new CustomerRepository()
+    const customer = new Customer('123', 'Customer 1')
+    const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
+    customer.changeAddress(address)
+    await customerRepository.create(customer)
+
+    const productRepository = new ProductRepository()
+    const product = new Product('123', 'Product 1', 10)
+    await productRepository.create(product)
+
+    const orderItem = new OrderItem(
+      '1',
+      product.name,
+      product.price,
+      product.id,
+      2
+    )
+    const order = new Order('o1', '123', [orderItem])
+
+    const orderItem2 = new OrderItem(
+      '2',
+      product.name,
+      product.price,
+      product.id,
+      4
+    )
+    const order2 = new Order('o2', '123', [orderItem2])
+
+    const orderRepository = new OrderRepository()
+    await orderRepository.create(order)
+    await orderRepository.create(order2)
+
+    const foundOrders = await orderRepository.findAll()
+    const orders = [order, order2]
+    expect(orders).toHaveLength(2)
+    expect(orders).toStrictEqual(foundOrders)
   })
 })
