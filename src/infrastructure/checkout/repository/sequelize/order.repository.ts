@@ -1,10 +1,10 @@
 import Order from '../../../../domain/checkout/entity/order'
 import OrderModel from './order.model'
 import OrderItemModel from './order-item.model'
-import type RepositoryInterface from '../../../../domain/@shared/repository/repository-interface'
+import type OrderRepositoryInterface from '../../../../domain/checkout/repository/order-repository'
 import OrderItem from '../../../../domain/checkout/entity/order_item'
 
-export default class OrderRepository implements RepositoryInterface<Order> {
+export default class OrderRepository implements OrderRepositoryInterface {
   async create (entity: Order): Promise<void> {
     await OrderModel.create({
       id: entity.id,
