@@ -1,5 +1,5 @@
-import type EventInterface from './event.interface'
-import type EventHandlerInterface from './event-handler.interface'
+import EventInterface from './event.interface'
+import EventHandlerInterface from './event-handler.interface'
 
 export default class EventDispatcher implements EventDispatcher {
   private eventHandlers: Record<string, EventHandlerInterface[]> = {}

@@ -1,4 +1,4 @@
-import type ProductInterface from './product.interface'
+import ProductInterface from './product.interface'
 
 export default class ProductB implements ProductInterface {
   private readonly _id: string

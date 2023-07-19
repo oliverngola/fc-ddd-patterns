@@ -1,4 +1,4 @@
-import type OrderItem from './order_item'
+import OrderItem from './order_item'
 
 export default class Order {
   private readonly _id: string

@@ -1,7 +1,7 @@
 import Order from '../../../../domain/checkout/entity/order'
 import OrderModel from './order.model'
 import OrderItemModel from './order-item.model'
-import type OrderRepositoryInterface from '../../../../domain/checkout/repository/order-repository'
+import OrderRepositoryInterface from '../../../../domain/checkout/repository/order-repository'
 import OrderItem from '../../../../domain/checkout/entity/order_item'
 
 export default class OrderRepository implements OrderRepositoryInterface {
